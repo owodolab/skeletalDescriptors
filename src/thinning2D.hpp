@@ -173,7 +173,9 @@ std::vector<desc_t> compute_skeletal_descriptors(int **dataMatrix, int* p_colors
     identifyEnds(skeleton_D, skelpixel_D, 1, branchEnd_D);
 
     identifyIntersections(skeleton_D, skelpixel_D, branchEnd_D, 1, branchJunction_D);
-
+    if(branchJunction_D->count < 0) {
+      branchJunction_D->count = 0;
+    }
 
 //    for(int i = 0; i < branchEnd_D->count; i++) {
 //        std::cout << branchEnd_D[i].row << " , " << branchEnd_D[i].col << "\n";
@@ -321,7 +323,9 @@ std::vector<desc_t> compute_skeletal_descriptors(int **dataMatrix, int* p_colors
     identifyEnds(skeleton_A, skelpixel_A, phasePixel, branchEnd_A);
 
     identifyIntersections(skeleton_A, skelpixel_A, branchEnd_A, phasePixel, branchJunction_A);
-
+    if(branchJunction_A->count < 0) {
+      branchJunction_A->count = 0;
+    }
     ends_on_boundary = 0;
     for(int i = 0; i < branchEnd_A->count; i++) {
         if(branchEnd_A[i].row == ny || branchEnd_A[i].row == ny - 1 || branchEnd_A[i].row == 0 || branchEnd_A[i].row == 1 ) ends_on_boundary++;

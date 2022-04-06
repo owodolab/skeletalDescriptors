@@ -153,18 +153,18 @@ bool isInArray(int val, int inputArray[], int sizeA){
 /// @return pointer to the structure containing information (count and positions) about the branch ends
 
  void identifyEnds(node* skeleton, int skelpixel , int phasePixel, node* branchEnd) {
-    
+
 //    node* branchEnd = new node[skelpixel];
     neighbor thispixel_neighbors;
     node thispixel;
-    
+
     int endcount = 0;
-    
+
     for(int i = 0; i < skelpixel; i++) {
         thispixel = skeleton[i];
 //        std::cout << thispixel->row << " , " << thispixel->col << "\n";
         thispixel_neighbors = getNeighbors(thispixel, skeleton, skelpixel);
-        
+
         if(thispixel_neighbors.count == 1) {
             branchEnd[endcount].row = thispixel.row;
             branchEnd[endcount].col = thispixel.col;
@@ -178,7 +178,7 @@ bool isInArray(int val, int inputArray[], int sizeA){
  //   for(int i = 0; i < branchEnd->count; i++) {
  //       std::cout << branchEnd[i].row << " , " << branchEnd[i].col << "\n";
  //   }
-    
+
  //   return *branchEnd;
 }
 
@@ -189,16 +189,16 @@ bool isInArray(int val, int inputArray[], int sizeA){
 /// @return pointer to the structure containing information (count and positions) about the intersections
 
 void identifyIntersections(node* skeleton, int skelpixel, node* branchEnd, int phasePixel, node* branchJunction) {
-    
- 
+
+
     neighbor thispixel_neighbors;
     node thispixel;
 
     node potentialJunction[skelpixel];
  //   node* potentialJunction = new node [skelpixel];
-    
+
     int endcount = branchEnd->count;
-    
+
     int potjunctcount = 0;
     for(int i = 0; i < skelpixel; i++) {
         thispixel = skeleton[i];
@@ -208,10 +208,10 @@ void identifyIntersections(node* skeleton, int skelpixel, node* branchEnd, int p
             potentialJunction[potjunctcount] = thispixel;
             potjunctcount++;
         }
-        
+
     }
-    
-    
+
+
     // DEBUG
 //    for(int i = 0 ; i < potjunctcount; i++){
 //        std::cout <<  potentialJunction[i].row << " , " << potentialJunction[i].col << "\n";
@@ -229,7 +229,7 @@ void identifyIntersections(node* skeleton, int skelpixel, node* branchEnd, int p
     node curpixel;
     neighbor potJunc_neighbors;
     neighbor first_neighbors;
-    
+
     for(int i = 0; i < potjunctcount; i++) {
         curpixel = potentialJunction[i];
         first_neighbors = getNeighbors(curpixel, skeleton, skelpixel);
@@ -245,13 +245,13 @@ void identifyIntersections(node* skeleton, int skelpixel, node* branchEnd, int p
                     delflag = 1;
                     continue;
             }
-            
+
             }
             if (delflag == 1) {
                 delflag = 0;
                 continue;
             }
-            
+
         }
         if (potJunc_neighbors.count > 0 && first_neighbors.even == 2) {
             if ((first_neighbors.direction[0] == true && first_neighbors.direction[4] == true) ||
@@ -261,23 +261,24 @@ void identifyIntersections(node* skeleton, int skelpixel, node* branchEnd, int p
                 delIdx[del] = i;
                 del++;
                 continue;
-                
+
             }
             if (delflag == 1) {
                 continue;
             }
-            
+
         }
     }
-    
+
 //    std::cout << del;
     node updatedpotentialJunction[potjunctcount];
+
  //   node* updatedpotentialJunction = new node[potjunctcount];
-    
+
     int tlen = 0;
-    
+
     // Deleting marked pixels
-    
+
     if(del == 0) {
         for (int i = 0; i < potjunctcount; i++) {
             updatedpotentialJunction[i].row = potentialJunction[i].row;
@@ -298,7 +299,7 @@ void identifyIntersections(node* skeleton, int skelpixel, node* branchEnd, int p
             }
         }
     }
-    
+
 //    delete [] delIdx;
 //    delete [] delpixel;
 //    delete [] potentialJunction;
@@ -308,13 +309,13 @@ void identifyIntersections(node* skeleton, int skelpixel, node* branchEnd, int p
 //        std::cout << updatedpotentialJunction[i].row << " , " <<  updatedpotentialJunction[i].col << "\n";
 //    }
 //    std::cout << "-------------------------------\n";
-    
-    
+
+
     del = 0;
-    
+
     neighbor second_neighbors;
     node curneighbor;
-    
+
     for(int i = 0; i < tlen; i++) {
         curpixel = updatedpotentialJunction[i];
 //        if(isInStruct(curpixel, delpixel, del) == true){
@@ -399,12 +400,12 @@ void identifyIntersections(node* skeleton, int skelpixel, node* branchEnd, int p
  //       delete[] even_neighbor_count;
  //       delete[] temp_node;
     }
-    
-    
+
+
 //    node* branchJunction = new node[tlen];
-    
+
     int junctcount = 0;
-    
+
     // Deleting marked pixels
     int removeIdx[tlen];
 //    int* removeIdx  = new int[tlen];
@@ -424,7 +425,7 @@ void identifyIntersections(node* skeleton, int skelpixel, node* branchEnd, int p
             }
         }
     }
-    
+
     for (int rem = 0; rem <= r; rem++) {
         if(isInArray(rem, removeIdx, r+1)){
             continue;
@@ -435,16 +436,16 @@ void identifyIntersections(node* skeleton, int skelpixel, node* branchEnd, int p
  //           std::cout << branchJunction[junctcount].row << " , " << branchJunction[junctcount].col << "\n";
             junctcount++;
         }
-        
+
     }
-    
+
  //   delete [] removeIdx;
 
  //   delete [] updatedpotentialJunction;
-    
+
     branchJunction->count = junctcount;
 
-    
+
  //   return *branchJunction;
 }
 }
